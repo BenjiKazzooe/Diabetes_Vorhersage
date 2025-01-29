@@ -42,7 +42,7 @@ Mit **SHAP (SHapley Additive Explanations)** analysieren wir die Bedeutung einze
 | **Logi. Regression**       |**0.7532**|**0.6491**| 0.6727     |**0.6607**|
 
 ### Fazit
-- **XGBoost hat den höchsten Recall** (87,3%) → Bestes Modell, wenn möglichst viele Diabetes-Fälle erkannt werden sollen.  
+- **XGBoost hat den höchsten Recall** (87,3%) → Bestes (und dann auch gewähltes) Modell, wenn möglichst viele Diabetes-Fälle erkannt werden sollen.  
 - **Logistische Regression hat die höchste Accuracy (75,3%)** → Bestes Modell, wenn Balance aus Precision & Recall gewünscht ist.  
 - **Random Forest liegt in der Mitte** → Kann evtl. mit Feature Engineering verbessert werden.  
 ---
