@@ -1,4 +1,3 @@
-# diabetes-classification-shap
 
 README.md:
 
