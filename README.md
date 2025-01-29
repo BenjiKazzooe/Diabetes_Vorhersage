@@ -32,8 +32,10 @@ Pregnancies, BloodPressure, SkinThickness u.a.
 🔹 Modell-Training & Evaluierung
 Wir haben XGBoost als Hauptmodell gewählt und folgende Metriken zur Evaluierung genutzt:
 
-Modell	  Accuracy	  Precision	  Recall	  F1-Score
-XGBoost	  85.4%	      82.1%	      79.5%    	80.8%
+| Modell  | Accuracy | Precision | Recall | F1-Score |
+|---------|---------|-----------|--------|---------|
+| XGBoost | 85.4%   | 82.1%     | 79.5%  | 80.8%  |
+
 
 
 🔹 Feature Importance Analyse mit SHAP
@@ -56,6 +58,5 @@ BMI vs. Diabetes-Risiko:
 
 Ein BMI über 30 erhöht das Diabetes-Risiko sprunghaft
 Ältere Personen (rote Punkte) sind stärker betroffen
-
 ![Figure_2](https://github.com/user-attachments/assets/3fe9f36b-0631-493d-a4c3-fa08ea2084b5)
 ![Figure_3](https://github.com/user-attachments/assets/4ee3611b-b677-4ef2-b23a-7ab2e414b8e5)
