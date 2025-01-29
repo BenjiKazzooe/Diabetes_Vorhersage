@@ -33,13 +33,33 @@ Mit **SHAP (SHapley Additive Explanations)** analysieren wir die Bedeutung einze
 
 ---
 
-## 🔹 **Modell-Training & Evaluierung**  
-Wir haben **XGBoost** als Hauptmodell gewählt und folgende Metriken zur Evaluierung genutzt:  
+## 🏆 Modellvergleich: XGBoost vs. Random Forest vs. Logistische Regression
 
-| Modell  | Accuracy | Precision | Recall | F1-Score |
-|---------|---------|-----------|--------|---------|
-| XGBoost | 85.4%   | 82.1%     | 79.5%  | 80.8%  |
+| Modell                     | Accuracy| Precision |   Recall   | F1-Score|
+|----------------------------|---------|-----------|------------|---------|
+| **XGBoost**                | 0.6039  | 0.4706    | **0.8727** | 0.6115  |
+| **Random Forest**          | 0.7208  | 0.6071    | 0.6182     | 0.6126  |
+| **Logi. Regression**       |**0.7532**|**0.6491**| 0.6727     |**0.6607**|
 
+### Fazit
+- **XGBoost hat den höchsten Recall** (87,3%) → Bestes Modell, wenn möglichst viele Diabetes-Fälle erkannt werden sollen.  
+- **Logistische Regression hat die höchste Accuracy (75,3%)** → Bestes Modell, wenn Balance aus Precision & Recall gewünscht ist.  
+- **Random Forest liegt in der Mitte** → Kann evtl. mit Feature Engineering verbessert werden.  
+---
+## ⏳ ARIMA-Zeitreihenanalyse für Glucose-Level
+
+Das ARIMA(5,1,0)-Modell wurde trainiert, um den Glucose-Level über die Zeit zu modellieren.
+
+**Modellstatistiken:**
+- **AIC = 7614, BIC = 7642** → Niedrigere Werte sind besser.
+- **Alle AR-Koeffizienten sind signifikant** (p-Wert < 0.05).
+- **Kurtosis = 3.38, Skew = 0.20** → Fast normalverteilte Residuen.
+- **Ljung-Box-Test (`Prob(Q) = 0.58`)** → Kein Hinweis auf starke Autokorrelation.
+
+### 📌 Interpretation:
+- **Das Modell kann für Glucose-Vorhersagen genutzt werden.**
+- **Es zeigt eine autoregressive Struktur (Glucose-Level hängt von vorherigen Werten ab).**
+  
 ---
 
 ## 🔹 **Feature Importance Analyse mit SHAP**  
@@ -53,7 +73,7 @@ Hier eine SHAP Summary-Analyse, die zeigt, welche Features den größten Einflus
 
 ---
 
-## 🏆 **SHAP-Abhängigkeitsanalysen**  
+## **SHAP-Abhängigkeitsanalysen**  
 ### 🔹 **Glucose vs. Diabetes-Risiko**  
 - Je höher der **Glucose-Wert**, desto größer die Wahrscheinlichkeit einer Diabetes-Erkrankung  
 - Der Effekt ist **linear** (höhere Werte = höheres Risiko)  
