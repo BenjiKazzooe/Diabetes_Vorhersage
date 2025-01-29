@@ -1,0 +1,64 @@
+import pandas as pd
+import numpy as np
+import shap
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import classification_report
+from xgboost import XGBClassifier
+
+
+file_path = '/Users/your_path'
+diabetes_data = pd.read_csv(file_path)
+
+# Features und Zielvariable trennen
+X = diabetes_data.drop(columns=['Outcome'])  # Features
+y = diabetes_data['Outcome']  # Zielvariable
+
+# Train-Test-Split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Daten skalieren
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+
+### Hyperparameter-Tuning für XGBoost
+xgb_param_grid = {
+    'max_depth': [3, 4, 5],
+    'learning_rate': [0.01, 0.1, 0.2],
+    'n_estimators': [50, 100, 150],
+    'scale_pos_weight': [2.0, 3.0, 4.0]
+}
+
+xgb_model = XGBClassifier(random_state=42)
+xgb_grid = GridSearchCV(xgb_model, param_grid=xgb_param_grid, scoring='recall', cv=3, verbose=1)
+xgb_grid.fit(X_train_scaled, y_train)
+
+print("\n--- Beste Parameter für XGBoost ---")
+print(xgb_grid.best_params_)
+xgb_best = xgb_grid.best_estimator_
+
+# Vorhersagen mit optimiertem XGBoost
+y_pred_xgb = xgb_best.predict(X_test_scaled)
+print("\nKlassifikationsbericht für optimierten XGBoost:")
+print(classification_report(y_test, y_pred_xgb))
+
+# SHAP erklären und berechnen
+explainer = shap.Explainer(xgb_best, X_train_scaled)
+shap_values = explainer(X_test_scaled)
+
+# Einfachere Darstellung der Feature-Wichtigkeit als Barplot
+shap.summary_plot(shap_values, X_test_scaled, plot_type="bar", feature_names=X.columns)
+
+# SHAP-Dependence-Plot für Glucose zur Analyse des Einflusses
+shap.dependence_plot("Glucose", shap_values.values, X_test, feature_names=X.columns)
+
+# SHAP-Dependence-Plot für BMI zur Analyse des Einflusses
+shap.dependence_plot("BMI", shap_values.values, X_test, feature_names=X.columns)
+
+# SHAP-Force-Plot für eine einzelne Vorhersage
+shap.initjs()
+shap.force_plot(explainer.expected_value, shap_values[0].values, X_test.iloc[0], matplotlib=True)
+
+plt.show()
